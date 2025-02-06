@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Azure Blob File Manager</title>
+    <!-- Bootstrap CSS を追加 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- ナビゲーションバーを追加 -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ url_for('index') }}">Azure Blob File Manager</a>
+            <div class="d-flex">
+                {% if user_name %}
+                    <span class="navbar-text me-3">こんにちは, {{ user_name }}さん</span>
+                    <a href="{{ url_for('logout') }}" class="btn btn-outline-danger">ログアウト</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h1>ファイル一覧</h1>
+        
+        <!-- フラッシュメッセージの表示を追加 -->
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="alert alert-info" role="alert">
+              {% for message in messages %}
+                <div>{{ message }}</div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+        
+        <form action="{{ url_for('delete') }}" method="POST">
+            <div class="mb-3">
+                <button type="submit" class="btn btn-danger">選択したファイルを削除</button>
+            </div>
+            <ul class="list-group">
+                {% for f in files %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <input type="checkbox" name="filenames" value="{{ f }}" class="form-check-input me-2"> {{ f }}
+                    </div>
+                    <a href="{{ url_for('download', filename=f) }}" class="btn btn-primary btn-sm">ダウンロード</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </form>
+
+        <h2 class="mt-4">ファイルアップロード</h2>
+        <form action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
+            <div class="mb-3">
+                <input type="file" name="file" class="form-control" required />
+            </div>
+            <button type="submit" class="btn btn-success">アップロード</button>
+        </form>
+    </div>
+
+    <!-- Bootstrap JavaScript を追加 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
