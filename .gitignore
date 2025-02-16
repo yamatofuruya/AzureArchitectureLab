@@ -1,0 +1,20 @@
+venv/
+.env
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+*.log
+
+# Flask specific
+instance/
+.webassets-cache/
+
+# OS files
+.DS_Store
+
+# IDE files
+.vscode/
+.idea/
+.mypy_cache/
